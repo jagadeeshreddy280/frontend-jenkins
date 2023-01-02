@@ -10,12 +10,12 @@ echo "building the project"
 post {
 success{
 emailext body: ' successfully completed',
-subject: 'test Email - success',
+subject: 'Status-$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS!',
 to:"jagadeeshreddy280@gmail.com"
 }
 failure{
-emailext body: ' successfully completed',
-subject: 'test Email - failed',
+emailext body: ' Not  completed',
+subject: 'Status-$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS!',
 to:"jagadeeshreddy280@gmail.com"
 }
 }
