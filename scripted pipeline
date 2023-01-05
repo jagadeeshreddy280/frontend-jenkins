@@ -1,15 +1,39 @@
-node ('worker_node1') {
-  try {
-      ...
+pipeline {
+    environment {
+        //This variable need be tested as string
+        doError = '1'
     }
-    currentBuild.result = 'SUCCESS'
-  }
-  catch (err) {
-    currentBuild.result = 'FAILURE'
-  }
-  finally {
-    mail to: 'jagadeeshreddy280@gmail.com',
-      subject: "Status of pipeline: ${currentBuild.fullDisplayName}",
-      body: "${env.BUILD_URL} has result ${currentBuild.result}"
-  }
+   
+    agent any
+    
+    stages {
+        stage('Error') {
+            when {
+                expression { doError == '1' }
+            }
+            steps {
+                echo "Failure"
+                error "failure test. It's work"
+            }
+        }
+        
+        stage('Success') {
+            when {
+                expression { doError == '0' }
+            }
+            steps {
+                echo "ok"
+            }
+        }
+    }
+    post {
+        always {
+            echo 'I will always say Hello again!'
+            
+            emailext body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}",
+                recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']],
+                subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
+            
+        }
+    }
 }
