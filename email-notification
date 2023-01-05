@@ -8,17 +8,13 @@ echo "building the project"
 }
 }
 post {
-success{
-emailext attachLog: true,
-body: ' successfully completed',
-subject: 'Status-$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS!',
-to:"jagadeeshreddy280@gmail.com"
-}
-failure{
-emailext attachLog: true,
-body: ' Not  completed',
-subject: 'Status-$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS!',
-to:"jagadeeshreddy280@gmail.com"
-}
-}
+        always {
+            
+            emailext attachLog: true,body: "${currentBuild.currentResult}",
+                recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']],
+                to : "jagadeeshreddy280@gmail.com",
+                subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
+            
+        }
+    }
 }
