@@ -33,6 +33,7 @@ pipeline {
             emailext attachLog: true,body: "${currentBuild.currentResult}",
                 recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']],
                 from: "jagadeeshreddy280@gmail.com",
+                to : "jagadeeshreddy280@gmail.com",
                 subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
             
         }
