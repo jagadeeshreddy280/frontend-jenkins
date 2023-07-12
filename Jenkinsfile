@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Clone repository') {
             steps {
-                git ''
+                git 'https://github.com/jagadeeshreddy280/poc_tasks.git'
             }
         }
     }
