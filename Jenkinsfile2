@@ -6,7 +6,7 @@ maven 'maven-3'
 stages{
 stage('GIT'){
 steps{
- checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/jagadeeshreddy280/jenkins-docker.git']]]) 
+ checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/jagadeeshreddy280/maven-build-docker-pipeline.git']]]) 
 }
 }
 stage('Build'){
