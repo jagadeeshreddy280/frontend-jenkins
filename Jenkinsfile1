@@ -1,0 +1,39 @@
+pipeline {
+  agent {
+    kubernetes {
+      cloud 'minikube'
+      label 'jenkins-agent'
+      yaml """
+        apiVersion: v1
+        kind: Pod
+        metadata:
+          labels:
+            app: myapp
+        spec:
+          containers:
+          - name: myapp
+            image: myapp:latest
+            ports:
+            - containerPort: 8080
+      """
+    }
+  }
+  stages {
+    stage('Build') {
+      steps {
+        sh 'docker build -t myapp .'
+      }
+    }
+    stage('Push') {
+      steps {
+        sh 'docker tag myapp localhost:5000/myapp:latest'
+        sh 'docker push localhost:5000/myapp:latest'
+      }
+    }
+    stage('Deploy') {
+      steps {
+        sh 'kubectl apply -f deployment.yaml'
+      }
+    }
+  }
+}
